@@ -1,5 +1,3 @@
-# OIBSIP_WebDevelopment-designing_Task3
-
 # OIBSIP Web Development Task – To-Do List Web App
 
 ## 🔹 Objective

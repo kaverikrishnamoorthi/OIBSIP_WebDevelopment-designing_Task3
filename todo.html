@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>To-Do List Web App</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: #0f172a;
+        color: #e5e7eb;
+    }
+
+    h1 {
+        text-align: center;
+        padding: 20px;
+        color: #facc15;
+    }
+
+    .container {
+        display: flex;
+        gap: 30px;
+        padding: 30px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    /* FORM */
+    .form-box {
+        background: #020617;
+        padding: 25px;
+        width: 30%;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    .form-box h3 {
+        margin-bottom: 15px;
+        color: #93c5fd;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+    }
+
+    .add-btn {
+        width: 100%;
+        padding: 12px;
+        background: #22c55e;
+        border: none;
+        color: #000;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    /* TASK SECTIONS */
+    .tasks {
+        width: 70%;
+    }
+
+    .task-section {
+        margin-bottom: 35px;
+    }
+
+    .task-section h2 {
+        margin-bottom: 15px;
+        color: #fbbf24;
+    }
+
+    .task {
+        background: #ffffff;
+        color: #000;
+        padding: 15px;
+        margin-bottom: 12px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+
+    .task p {
+        margin: 5px 0;
+    }
+
+    .task small {
+        color: #555;
+    }
+
+    .task-actions button {
+        margin-left: 5px;
+        padding: 6px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .complete-btn {
+        background: #22c55e;
+        color: #000;
+    }
+
+    .edit-btn {
+        background: #fde047;
+    }
+
+    .delete-btn {
+        background: #ef4444;
+        color: #fff;
+    }
+</style>
+</head>
+<body>
+
+<h1>To-Do List Web App</h1>
+
+<div class="container">
+
+    <!-- ADD FORM -->
+    <div class="form-box">
+        <h3>Add New Task</h3>
+        <input type="text" id="title" placeholder="Task Title">
+        <textarea id="desc" placeholder="Task Description"></textarea>
+        <button class="add-btn" onclick="addTask()">Add Task</button>
+    </div>
+
+    <!-- TASK LISTS -->
+    <div class="tasks">
+
+        <div class="task-section">
+            <h2>Pending Tasks</h2>
+            <div id="pendingTasks"></div>
+        </div>
+
+        <div class="task-section">
+            <h2>Completed Tasks</h2>
+            <div id="completedTasks"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function addTask() {
+    let title = document.getElementById("title").value;
+    let desc = document.getElementById("desc").value;
+
+    if (title === "") {
+        alert("Task title is required");
+        return;
+    }
+
+    let time = new Date().toLocaleString();
+
+    let task = document.createElement("div");
+    task.className = "task";
+
+    task.innerHTML = `
+        <div class="task-content">
+            <strong class="task-title">${title}</strong>
+            <p class="task-desc">${desc}</p>
+            <small>Added on: ${time}</small>
+        </div>
+        <div class="task-actions">
+            <button class="complete-btn" onclick="completeTask(this)">✔</button>
+            <button class="edit-btn" onclick="editTask(this)">Edit</button>
+            <button class="delete-btn" onclick="deleteTask(this)">X</button>
+        </div>
+    `;
+
+    document.getElementById("pendingTasks").appendChild(task);
+
+    document.getElementById("title").value = "";
+    document.getElementById("desc").value = "";
+}
+
+function deleteTask(btn) {
+    btn.closest(".task").remove();
+}
+
+function editTask(btn) {
+    let task = btn.closest(".task");
+    let titleEl = task.querySelector(".task-title");
+    let descEl = task.querySelector(".task-desc");
+
+    let newTitle = prompt("Edit task title:", titleEl.innerText);
+    let newDesc = prompt("Edit task description:", descEl.innerText);
+
+    if (newTitle !== null && newTitle !== "") {
+        titleEl.innerText = newTitle;
+    }
+    if (newDesc !== null) {
+        descEl.innerText = newDesc;
+    }
+}
+
+function completeTask(btn) {
+    let task = btn.closest(".task");
+    btn.remove(); // remove complete button
+    document.getElementById("completedTasks").appendChild(task);
+}
+</script>
+
+</body>
+</html>
+
